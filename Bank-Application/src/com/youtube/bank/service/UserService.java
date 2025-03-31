@@ -21,4 +21,9 @@ public class UserService {
 		return userRepository.addNewCustomer(username, password, contact);
 	}
 	
+	// This function's data will be retrieved from UserRepository class file
+	public Double checkBankBalance(String userId) {
+		return userRepository.checkBankBalance(userId);
+	}
+	
 }

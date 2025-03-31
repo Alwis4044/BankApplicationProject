@@ -48,7 +48,7 @@ public class Main {
 				//Create customers option will be available only for admin
 			} 
 			else if(user != null && user.getRole().equals("user")) {
-				main.initCustomer();
+				main.initCustomer(user);	// Passing user object to fetch user id
 			}
 			else {
 				System.out.println("Login failed"); 
@@ -115,7 +115,8 @@ public class Main {
 	}
 	
 	// This method should be accessible by the customer
-	private void initCustomer() {
+	// Adding an argument to fetch user id
+	private void initCustomer(User user) {
 		// Dummy message
 		//System.out.println("You are a customer");
 		
@@ -123,7 +124,7 @@ public class Main {
 		
 		while(flag) {
 			System.out.println("1. Exit/Logout");
-			
+			System.out.println("2. Check bank balance");
 			int selectedOption = scanner.nextInt();
 			
 			switch(selectedOption) {
@@ -132,14 +133,26 @@ public class Main {
 				flag = false;
 				System.out.println("You have successfully logged out...");
 				break;
+			case 2:
+				// calling the function using static main object
+				Double balance = main.checkBankBalance(user.getUsername());
+				// Printing the bank balance
+				if(balance != null) {
+					System.out.println("Your bank balance is " + balance);
+				} else {
+					System.out.println("Check your username");
+				}
+				break;
 			
 			default:
 				System.out.println("Wrong choice!!");
+			}	
 		}
-			
-		}
 		
-		
-		
+	}
+	
+	// This function is available for the user
+	private Double checkBankBalance(String userId) {
+		return userService.checkBankBalance(userId);
 	}
 }
