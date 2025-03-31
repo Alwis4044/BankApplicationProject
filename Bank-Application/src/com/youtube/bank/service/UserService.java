@@ -16,4 +16,9 @@ public class UserService {
 		return userRepository.login(username, password);
 	}
 	
+	// This function's data will be retrieved from UserRepository class file
+	public boolean addNewCustomer(String username,String password, String contact) {
+		return userRepository.addNewCustomer(username, password, contact);
+	}
+	
 }

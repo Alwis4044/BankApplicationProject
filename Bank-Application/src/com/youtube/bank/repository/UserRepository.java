@@ -22,6 +22,8 @@ public class UserRepository {
 	
 	private static Set<User> users = new HashSet<>();	
 	
+	// Using some hard coded data since we are not using a database to store user data
+	// Storing all these data into a static block in order to run the program
 	static {
 		User user1 = new User("admin","admin","1234567","admin",0.0);
 		User user2 = new User("user2","user2","12345678","user",1000.0);
@@ -53,6 +55,12 @@ public class UserRepository {
 			return null;
 		}
 		
+	}
+	
+	// Creating a function to add new customer
+	public boolean addNewCustomer(String username,String password, String contact) {
+		User user = new User(username,password,contact,"user",500.0);
+		return users.add(user);
 	}
 	
 }
