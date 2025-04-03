@@ -26,4 +26,13 @@ public class UserService {
 		return userRepository.checkBankBalance(userId);
 	}
 	
+	public User getUser(String userId) {
+		return userRepository.getUser(userId);
+	}
+	
+	public boolean transferAmount(String userId, String payeeUserId, Double amount) {
+		return userRepository.transferAmount(userId, payeeUserId, amount);
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.youtube.bank.repository;
 
 import java.util.Collections;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,62 @@ public class UserRepository {
 		users.add(user2); 
 		users.add(user3);
 		users.add(user4);
+	}
+	
+	// A method to perform transactions within customers accounts
+	public boolean transferAmount(String userId, String payeeUserId, Double amount) {
+		
+		// If debit is successful, returns true else false
+		boolean isDebit = debit(userId, amount);
+		// If credit is successful, returns true else false
+		boolean isCredit = credit(payeeUserId, amount);	
+		
+		// Returning a boolean value for both actions combined result
+		return isDebit && isCredit;
+	}
+	
+	// A method to perform debit transaction
+	private boolean debit(String userId, Double amount) {
+		User user = getUser(userId);
+		Double accountBalance = user.getAccountBalance();
+		
+		//Removing the current user from the list since sets are immutable
+		users.remove(user);
+		
+		// Storing the balance after amount debited from customer's account
+		Double finalBalance = accountBalance - amount;
+		user.setAccountBalance(finalBalance);
+		
+		// Adding the user with updated bank balance in the set
+		return users.add(user);
+	}
+	
+	// A method to perform credit transaction
+	private boolean credit(String userId, Double amount) {
+		User user = getUser(userId);
+		Double accountBalance = user.getAccountBalance();
+		
+		//Removing the current user from the list to avoid redundant data
+		users.remove(user);
+		
+		// Storing the balance after amount credited to customer's account
+		Double finalBalance = accountBalance + amount;
+		user.setAccountBalance(finalBalance);
+		
+		// Adding the user with updated bank balance in the set
+		return users.add(user);
+	}
+	
+	// A method to get the userId
+	// Using stream API to fetch the userId from the data stored in the list
+	public User getUser(String userId) {
+		List<User> result = users.stream().filter(user -> user.getUsername().equals(userId)).collect(Collectors.toList());
+		
+		if(!result.isEmpty()) {
+			return result.get(0);
+		}
+		return null;
+
 	}
 	
 	// Using stream API to fetch the user id to retrieve the bank balance

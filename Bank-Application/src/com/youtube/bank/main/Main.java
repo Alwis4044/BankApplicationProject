@@ -104,6 +104,7 @@ public class Main {
 		System.out.println("Enter contact number");
 		String contact = scanner.next();
 		
+		// A boolean value is returned and stored in result
 		boolean result = userService.addNewCustomer(username, password, contact);
 		
 		if(result) {
@@ -125,6 +126,7 @@ public class Main {
 		while(flag) {
 			System.out.println("1. Exit/Logout");
 			System.out.println("2. Check bank balance");
+			System.out.println("3. Fund Transfer");
 			int selectedOption = scanner.nextInt();
 			
 			switch(selectedOption) {
@@ -143,6 +145,9 @@ public class Main {
 					System.out.println("Check your username");
 				}
 				break;
+			case 3:
+				main.fundTransfer(user);
+				break;
 			
 			default:
 				System.out.println("Wrong choice!!");
@@ -150,6 +155,50 @@ public class Main {
 		}
 		
 	}
+	
+	// Function available for the customer
+	private void fundTransfer(User userDetails) {
+		System.out.println("Enter payee account user id");
+		String payeeAccountId = scanner.next();
+		
+		// Verifying the user id of payee account
+		User user = getUser(payeeAccountId);
+		
+		if(user != null) {
+			
+			//Printing a dummy statement to test the function
+			//System.out.println("Valid username");
+			
+			System.out.println("Enter amount to transfer");
+			Double amount = scanner.nextDouble();
+			
+			// We need to check whether the amount is less than customer's current bank balance
+			Double userAccountBalance = checkBankBalance(userDetails.getUsername());
+			
+			if(userAccountBalance >= amount) {
+				boolean result = userService.transferAmount(userDetails.getUsername(), payeeAccountId, amount);
+				
+				// Result contains the status of transferAmount method
+				// If true, transfer successful, else transfer failed
+				if(result) {
+					System.out.println("Amount transferred successfully...");
+				} else {
+					System.out.println("Transfer failed...");
+				}
+				
+			} else {
+				System.out.println("Your balance is insufficient: " + userAccountBalance);
+			}
+			
+		}else {
+			System.out.println("Please enter a valid username...");
+		}
+	}
+	
+	private User getUser(String userId) {
+		return userService.getUser(userId);
+	}
+	
 	
 	// This function is available for the user
 	private Double checkBankBalance(String userId) {
