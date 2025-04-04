@@ -1,5 +1,6 @@
 package com.youtube.bank.repository;
 
+import java.time.LocalDate;
 import java.util.Collections;
 
 import java.util.HashSet;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.youtube.bank.entity.Transaction;
 import com.youtube.bank.entity.User;
 
 // Writing the logic to verify the user credentials
@@ -41,16 +43,16 @@ public class UserRepository {
 	public boolean transferAmount(String userId, String payeeUserId, Double amount) {
 		
 		// If debit is successful, returns true else false
-		boolean isDebit = debit(userId, amount);
+		boolean isDebit = debit(userId, amount,payeeUserId);
 		// If credit is successful, returns true else false
-		boolean isCredit = credit(payeeUserId, amount);	
+		boolean isCredit = credit(payeeUserId, amount,userId);	
 		
 		// Returning a boolean value for both actions combined result
 		return isDebit && isCredit;
 	}
 	
 	// A method to perform debit transaction
-	private boolean debit(String userId, Double amount) {
+	private boolean debit(String userId, Double amount,String payeeUserId) {
 		User user = getUser(userId);
 		Double accountBalance = user.getAccountBalance();
 		
@@ -61,12 +63,20 @@ public class UserRepository {
 		Double finalBalance = accountBalance - amount;
 		user.setAccountBalance(finalBalance);
 		
+		// Updating the debit transaction history
+		Transaction transaction = new Transaction(
+				LocalDate.now(),
+				payeeUserId,
+				amount,
+				"Debit",
+				accountBalance,
+				finalBalance);
 		// Adding the user with updated bank balance in the set
 		return users.add(user);
 	}
 	
 	// A method to perform credit transaction
-	private boolean credit(String userId, Double amount) {
+	private boolean credit(String userId, Double amount,String userId) {
 		User user = getUser(userId);
 		Double accountBalance = user.getAccountBalance();
 		
