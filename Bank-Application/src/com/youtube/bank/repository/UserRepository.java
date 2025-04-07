@@ -1,6 +1,7 @@
 package com.youtube.bank.repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 
 import java.util.HashSet;
@@ -25,6 +26,10 @@ public class UserRepository {
 	
 	private static Set<User> users = new HashSet<>();	
 	
+	// Using an arraylist to store the transaction history since same user can perform transactions
+	// in a repeated manner
+	private static List<Transaction> transactions = new ArrayList<>();
+	
 	// Using some hard coded data since we are not using a database to store user data
 	// Storing all these data into a static block in order to run the program
 	static {
@@ -42,9 +47,9 @@ public class UserRepository {
 	// A method to perform transactions within customers accounts
 	public boolean transferAmount(String userId, String payeeUserId, Double amount) {
 		
-		// If debit is successful, returns true else false
+		// If debit is successful returns true, else false
 		boolean isDebit = debit(userId, amount,payeeUserId);
-		// If credit is successful, returns true else false
+		// If credit is successful returns true, else false
 		boolean isCredit = credit(payeeUserId, amount,userId);	
 		
 		// Returning a boolean value for both actions combined result
@@ -70,22 +75,42 @@ public class UserRepository {
 				amount,
 				"Debit",
 				accountBalance,
-				finalBalance);
+				finalBalance,
+				userId
+		);
+		System.out.println(transaction);
+		// Adding debit transaction history in the arraylist
+		transactions.add(transaction);
+		
 		// Adding the user with updated bank balance in the set
 		return users.add(user);
 	}
 	
 	// A method to perform credit transaction
-	private boolean credit(String userId, Double amount,String userId) {
-		User user = getUser(userId);
+	private boolean credit(String payeeUserId, Double amount,String userId) {
+		User user = getUser(payeeUserId);
 		Double accountBalance = user.getAccountBalance();
 		
-		//Removing the current user from the list to avoid redundant data
+		//Removing the current user from the list since sets are immutable
 		users.remove(user);
 		
 		// Storing the balance after amount credited to customer's account
 		Double finalBalance = accountBalance + amount;
 		user.setAccountBalance(finalBalance);
+		
+		// Updating the credit transaction history
+		Transaction transaction = new Transaction(
+				LocalDate.now(),
+				userId,
+				amount,
+				"Credit",
+				accountBalance,
+				finalBalance,
+				payeeUserId
+		);
+		System.out.println(transaction);
+		// Adding the credit transaction history in the arraylist
+		transactions.add(transaction);
 		
 		// Adding the user with updated bank balance in the set
 		return users.add(user);

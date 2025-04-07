@@ -11,9 +11,11 @@ public class Transaction {
 	private String transactionType;
 	private Double initialBalance;
 	private Double finalBalance;
+	private String transactionPerformedBy;
 	
+
 	public Transaction(LocalDate transactionDate, String transactionUserId, Double transactionAmount,
-			String transactionType, Double initialBalance, Double finalBalance) {
+			String transactionType, Double initialBalance, Double finalBalance, String transactionPerformedBy) {
 		super();
 		this.transactionDate = transactionDate;
 		this.transactionUserId = transactionUserId;
@@ -21,6 +23,18 @@ public class Transaction {
 		this.transactionType = transactionType;
 		this.initialBalance = initialBalance;
 		this.finalBalance = finalBalance;
+		this.transactionPerformedBy = transactionPerformedBy;
+	}
+	
+	
+	public String getTransactionPerformedBy() {
+		return transactionPerformedBy;
+	}
+
+
+
+	public void setTransactionPerformedBy(String transactionPerformedBy) {
+		this.transactionPerformedBy = transactionPerformedBy;
 	}
 
 	public LocalDate getTransactionDate() {
@@ -70,7 +84,18 @@ public class Transaction {
 	public void setFinalBalance(Double finalBalance) {
 		this.finalBalance = finalBalance;
 	}
-	
+
+
+	@Override
+	public String toString() {
+		return "Transaction [transactionDate=" + transactionDate + ", transactionUserId=" + transactionUserId
+				+ ", transactionAmount=" + transactionAmount + ", transactionType=" + transactionType
+				+ ", initialBalance=" + initialBalance + ", finalBalance=" + finalBalance + ", transactionPerformedBy="
+				+ transactionPerformedBy + "]";
+	}
+	// toString() returns the string representation of our object
+	// if this method is not defined then on calling the print method, the object reference gets printed
+
 	
 	
 	
