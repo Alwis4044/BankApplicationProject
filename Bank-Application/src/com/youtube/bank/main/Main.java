@@ -64,6 +64,7 @@ public class Main {
 		//System.out.println("You are an admin");
 		
 		boolean flag = true;
+		String userId = "";
 		
 		// Using a while loop to keep the admin logged in unless exit option
 		// is chosen
@@ -72,6 +73,7 @@ public class Main {
 			System.out.println("1. Exit/Logout");
 			System.out.println("2. Create a customer account");
 			System.out.println("3. See all transactions");
+			System.out.println("4. Check bank balance");
 			
 			// Taking input from the admin
 			int selectOption = scanner.nextInt();
@@ -88,8 +90,14 @@ public class Main {
 					break;
 				case 3: 
 					System.out.println("Enter user id");
-					String userId = scanner.next();
+					userId = scanner.next();
 					printTransactions(userId);
+					break;
+				case 4:
+					System.out.println("Enter user id");
+					userId = scanner.next();
+					Double accountBalance = checkBankBalance(userId);
+					System.out.println("Your account balance is " + accountBalance);
 					break;
 				default:
 					System.out.println("Wrong choice!!");
