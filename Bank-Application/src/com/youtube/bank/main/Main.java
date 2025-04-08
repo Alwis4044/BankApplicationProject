@@ -127,6 +127,7 @@ public class Main {
 			System.out.println("1. Exit/Logout");
 			System.out.println("2. Check bank balance");
 			System.out.println("3. Fund Transfer");
+			System.out.println("4. See all transactions");
 			int selectedOption = scanner.nextInt();
 			
 			switch(selectedOption) {
@@ -148,12 +149,19 @@ public class Main {
 			case 3:
 				main.fundTransfer(user);
 				break;
-			
+			case 4:
+				main.printTransactions(user.getUsername());
+				break;
 			default:
 				System.out.println("Wrong choice!!");
 			}	
 		}
 		
+	}
+	
+	// A method to print transaction history
+	private void printTransactions(String userId) {
+		userService.printTransactions(userId);
 	}
 	
 	// Function available for the customer

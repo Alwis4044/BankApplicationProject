@@ -116,6 +116,29 @@ public class UserRepository {
 		return users.add(user);
 	}
 	
+	
+	// A method to print the transaction history of specific customer
+	public void printTransactions(String userId) {
+		// Finding the transaction data of user and storing it in a list
+		List<Transaction> filteredTransactions = transactions.stream().filter(transaction -> transaction.getTransactionPerformedBy().equals(userId)).collect(Collectors.toList());
+		
+		// Retrieving data from the list filteredTransactions and printing the transaction history of the user
+		System.out.println("Date\tUser Id\tAmount\tType\tInitial Balance\tFinal Balance");
+		System.out.println("------------------------------------------------------------------------");
+		for(Transaction t:filteredTransactions) {
+			System.out.println(t.getTransactionDate()
+					+ "\t" + t.getTransactionUserId()
+					+ "\t" + t.getTransactionAmount()
+					+ "\t" + t.getTransactionType()
+					+ "\t" + t.getInitialBalance()
+					+ "\t" + t.getFinalBalance()
+					); 
+		}
+		System.out.println("------------------------------------------------------------------------");
+
+		
+	}
+	
 	// A method to get the userId
 	// Using stream API to fetch the userId from the data stored in the list
 	public User getUser(String userId) {
