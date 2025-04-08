@@ -71,6 +71,7 @@ public class Main {
 			// Creating a menu to display options for admin
 			System.out.println("1. Exit/Logout");
 			System.out.println("2. Create a customer account");
+			System.out.println("3. See all transactions");
 			
 			// Taking input from the admin
 			int selectOption = scanner.nextInt();
@@ -84,6 +85,11 @@ public class Main {
 				case 2:
 					//System.out.println("Add a new customer");
 					main.addNewCustomer();
+					break;
+				case 3: 
+					System.out.println("Enter user id");
+					String userId = scanner.next();
+					printTransactions(userId);
 					break;
 				default:
 					System.out.println("Wrong choice!!");
