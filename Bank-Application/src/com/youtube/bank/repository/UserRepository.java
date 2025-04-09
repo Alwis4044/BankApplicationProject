@@ -3,9 +3,10 @@ package com.youtube.bank.repository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,10 @@ public class UserRepository {
 	// in a repeated manner
 	private static List<Transaction> transactions = new ArrayList<>();
 	
+	// Using Map, to store values in Key-value pair
+	// We will be storing the UserId as key and a boolean data as value
+	Map<String, Boolean> chequeBookRequest = new HashMap<>();
+	
 	// Using some hard coded data since we are not using a database to store user data
 	// Storing all these data into a static block in order to run the program
 	static {
@@ -44,6 +49,15 @@ public class UserRepository {
 		users.add(user4);
 	}
 	
+	// This feature is available for the customer
+	public void raiseChequeBookRequest(String userId) {
+		chequeBookRequest.put(userId, false);
+	}
+	
+	// A method to print the status of cheque book requests
+	public Map<String, Boolean> getAllChequeBookRequest() {
+		return chequeBookRequest;
+	}
 	// A method to perform transactions within customers accounts
 	public boolean transferAmount(String userId, String payeeUserId, Double amount) {
 		

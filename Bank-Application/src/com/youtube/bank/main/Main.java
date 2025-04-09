@@ -1,5 +1,6 @@
 package com.youtube.bank.main;
 
+import java.util.Map;
 import java.util.Scanner;
 
 import com.youtube.bank.entity.User;
@@ -142,6 +143,7 @@ public class Main {
 			System.out.println("2. Check bank balance");
 			System.out.println("3. Fund Transfer");
 			System.out.println("4. See all transactions");
+			System.out.println("5. Raise cheque book request");
 			int selectedOption = scanner.nextInt();
 			
 			switch(selectedOption) {
@@ -166,11 +168,31 @@ public class Main {
 			case 4:
 				main.printTransactions(user.getUsername());
 				break;
+			case 5: 
+				String userId = user.getUsername();
+				Map<String,Boolean> map = getAllChequeBookRequest();
+				
+				if(map.containsKey(userId) && map.get(userId)) {
+					System.out.println("You have already raised a request and it is already approved");
+				} else if(map.containsKey(userId) && !map.get(userId)) {
+					System.out.println("You have already raised a request and it is pending for approval");
+				} else {
+					raiseChequeBookRequest(userId);
+					System.out.println("Request raised successfully...");
+				}
+				break;
 			default:
 				System.out.println("Wrong choice!!");
 			}	
 		}
 		
+	}
+	
+	private Map<String, Boolean> getAllChequeBookRequest() {
+		return userService.getAllChequeBookRequest();
+	}
+	private void raiseChequeBookRequest(String userId) {
+		userService.raiseChequeBookRequest(userId);
 	}
 	
 	// A method to print transaction history
