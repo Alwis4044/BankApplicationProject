@@ -1,5 +1,6 @@
 package com.youtube.bank.main;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -75,6 +76,7 @@ public class Main {
 			System.out.println("2. Create a customer account");
 			System.out.println("3. See all transactions");
 			System.out.println("4. Check bank balance");
+			System.out.println("5. Approve Cheque book request");
 			
 			// Taking input from the admin
 			int selectOption = scanner.nextInt();
@@ -100,11 +102,31 @@ public class Main {
 					Double accountBalance = checkBankBalance(userId);
 					System.out.println("Your account balance is " + accountBalance);
 					break;
+				case 5: 
+					// Fetching all the users with pending request from chequeBookRequest map collection
+					List<String> userIds = getUserIdForChequeBookRequest();
+					System.out.println("Please select user id from below...");
+					System.out.println(userIds);
+					
+					userId = scanner.next(); 
+					// Admin calls the method to approve the request
+					approveChequeBookRequest(userId);
+					
+					System.out.println("Cheque book request is approved...");
+					break;
 				default:
 					System.out.println("Wrong choice!!");
 			}
 		}
 	
+	}
+	
+	private void approveChequeBookRequest(String userId) {
+		userService.approveChequeBookRequest(userId);
+	}
+	
+	private List<String> getUserIdForChequeBookRequest() {
+		return userService.getUserIdForChequeBookRequest();
 	}
 	
 	// This method is only available for the admin

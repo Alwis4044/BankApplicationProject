@@ -49,6 +49,27 @@ public class UserRepository {
 		users.add(user4);
 	}
 	
+	// A method for the admin to approve the cheque book request from the user
+	public void approveChequeBookRequest(String userId) {
+		if(chequeBookRequest.containsKey(userId)) {
+			chequeBookRequest.put(userId, true);
+		}
+		}
+	
+	
+	// This method is to fetch all the user Ids to with pending requests
+	public List<String> getUserIdForChequeBookRequest() {
+		List<String> userIds = new ArrayList<>();
+		
+		for(Map.Entry<String, Boolean> entry: chequeBookRequest.entrySet()) {
+			if(!entry.getValue()) {
+				userIds.add(entry.getKey());
+			}
+		}
+		
+		return userIds;
+	}
+	
 	// This feature is available for the customer
 	public void raiseChequeBookRequest(String userId) {
 		chequeBookRequest.put(userId, false);
